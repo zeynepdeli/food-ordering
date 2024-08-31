@@ -5,7 +5,7 @@ import Footer from "@/app/container/footer";
 import Header from "@/app/container/header/page";
 import Reservation from "@/app/container/reservation";
 import Customers from "@/app/components/customers";
-import MenuWrapper from "@/app/products/menuWrapper";
+import MenuWrapper from "@/app/menu/page";
 import Image from "next/image";
 import Product from "./product/page";
 

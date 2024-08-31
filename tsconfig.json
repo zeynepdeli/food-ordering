@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "Schema/register.js", "Schema/login.js", "Schema/reservation.js", "app/api/user/route.js", "lib/db.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "Schema/register.js", "Schema/login.js", "Schema/reservation.js", "app/api/user/route.js", "lib/db.js", "pages/api/auth/[...nextauth].ts", "lib/mongo.js", "app/api/user/register/route.js"],
   "exclude": ["node_modules"]
 }

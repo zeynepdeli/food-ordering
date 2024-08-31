@@ -4,6 +4,7 @@ import Link from "next/link";
 import Input from "../../components/form/input";
 import Title from "../../components/title";
 import { loginSchema } from "@/Schema/login";
+import { useSession, signIn } from "next-auth/react";
 
 interface LoginFormValues {
   email: string;
@@ -11,6 +12,8 @@ interface LoginFormValues {
 }
 
 const Login: React.FC = () => {
+  const { data: session } = useSession();
+  console.log(session);
   const onSubmit = async (values: LoginFormValues, actions: any) => {
     await new Promise((resolve) => setTimeout(resolve, 4000));
     actions.resetForm();
@@ -65,8 +68,14 @@ const Login: React.FC = () => {
           ))}
         </div>
         <div className="flex flex-col w-full gap-y-3 mt-6">
-          <button className="btn-primary" type="submit">LOGIN</button>
-          <button className="btn-primary !bg-secondary" type="button">
+        <button className="btn-primary" type="submit">
+            LOGIN
+          </button>
+          <button
+            className="btn-primary !bg-secondary"
+            type="button"
+            onClick={() => signIn("github")}
+          >
             <i className="fa fa-github mr-2 text-lg"></i>
             GITHUB
           </button>

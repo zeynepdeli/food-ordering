@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import Input from "../components/form/input";
 import Title from "../components/title";

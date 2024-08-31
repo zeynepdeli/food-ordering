@@ -1,25 +1,38 @@
-"use client"
+"use client";
+
 import { useFormik } from "formik";
 import Link from "next/link";
 import Input from "../../components/form/input";
 import Title from "../../components/title";
-import { registerSchema } from "@/Schema/register";
+import { registerSchema } from "../../../Schema/register";
+import axios from "axios";
+import { toast } from "react-toastify";
 
-interface RegisterFormValues {
-  fullName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
+const Register = () => {
+  const onSubmit = async (values, actions) => {
+    console.log("Submitted values:", values); 
 
-const Register: React.FC = () => {
-  const onSubmit = async (values: RegisterFormValues, actions: any) => {
-    await new Promise((resolve) => setTimeout(resolve, 4000));
-    actions.resetForm();
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/user/register`,
+        values
+      );
+      if (res.status === 201) {
+        toast.success("User created successfully");
+      }
+      console.log(res);
+
+      actions.resetForm();
+    } catch (err) {
+      toast.error(err.response?.data.message || "An error occurred");
+      console.error("Error during registration:", err.response?.data || err.message);
+    } finally {
+      actions.setSubmitting(false);
+    }
   };
 
   const { values, errors, touched, handleSubmit, handleChange, handleBlur } =
-    useFormik<RegisterFormValues>({
+    useFormik({
       initialValues: {
         fullName: "",
         email: "",
@@ -32,7 +45,7 @@ const Register: React.FC = () => {
 
   const inputs = [
     {
-      id: "fullName",
+      id: 1,
       name: "fullName",
       type: "text",
       placeholder: "Your Full Name",
@@ -41,7 +54,7 @@ const Register: React.FC = () => {
       touched: touched.fullName,
     },
     {
-      id: "email",
+      id: 2,
       name: "email",
       type: "email",
       placeholder: "Your Email Address",
@@ -50,7 +63,7 @@ const Register: React.FC = () => {
       touched: touched.email,
     },
     {
-      id: "password",
+      id: 3,
       name: "password",
       type: "password",
       placeholder: "Your Password",
@@ -59,10 +72,10 @@ const Register: React.FC = () => {
       touched: touched.password,
     },
     {
-      id: "confirmPassword",
+      id: 4,
       name: "confirmPassword",
       type: "password",
-      placeholder: "Your Password Again",
+      placeholder: "Confirm Your Password",
       value: values.confirmPassword,
       errorMessage: errors.confirmPassword,
       touched: touched.confirmPassword,
@@ -80,7 +93,12 @@ const Register: React.FC = () => {
           {inputs.map((input) => (
             <Input
               key={input.id}
-              {...input}
+              name={input.name} // `name` özelliğini iletin
+              type={input.type}
+              placeholder={input.placeholder}
+              value={input.value}
+              errorMessage={input.errorMessage}
+              touched={input.touched}
               onChange={handleChange}
               onBlur={handleBlur}
             />

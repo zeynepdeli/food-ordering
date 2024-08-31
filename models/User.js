@@ -1,15 +1,18 @@
-// models/User.js
 import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema(
   {
-    name: {
+  
+    fullName: {
+      id:Number,
       type: String,
       required: true,
     },
     email: {
       type: String,
       required: true,
+      unique:true
     },
     phoneNumber: {
       type: String,
@@ -24,10 +27,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    confirmPassword: {
-      type: String,
-      required: true,
-    },
     emailVerified: {
       type: String,
       default: null,
@@ -35,6 +34,19 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+    
+
+userSchema.pre('save', async function (next) {
+  if (this.isModified('password')) {
+    try {
+      this.password = await bcrypt.hash(this.password, 12);
+    } catch (error) {
+      return next(error);
+    }
+  }
+  next();
+});
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);
 

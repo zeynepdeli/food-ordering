@@ -5,11 +5,19 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string;
   errorMessage?: string;
   touched?: boolean;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
-const Input: React.FC<InputProps> = (props) => {
-  const { type, errorMessage, touched, placeholder, ...inputProps } = props;
-
+const Input: React.FC<InputProps> = ({
+  type,
+  errorMessage,
+  touched,
+  placeholder,
+  onChange,
+  onBlur,
+  ...inputProps
+}) => {
   return (
     <div className="w-full">
       <label className="relative block cursor-text w-full">
@@ -18,9 +26,9 @@ const Input: React.FC<InputProps> = (props) => {
           className={`h-14 w-full border outline-none px-4 peer 
           ${type !== "datetime-local" && "pt-2"}
           ${touched && errorMessage ? "border-red-500" : "border-primary"}
-          
           `}
-          required
+          onChange={onChange}
+          onBlur={onBlur} 
           {...inputProps}
         />
         {type !== "datetime-local" && (
@@ -29,7 +37,9 @@ const Input: React.FC<InputProps> = (props) => {
           </span>
         )}
       </label>
-      {touched && <span className="text-xs text-danger">{errorMessage}</span>}
+      {touched && errorMessage && (
+        <span className="text-xs text-red-500">{errorMessage}</span>
+      )}
     </div>
   );
 };

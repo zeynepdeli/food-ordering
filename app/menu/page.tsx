@@ -1,8 +1,8 @@
 import React from "react";
-import Title from "../../components/title";
-import MenuItem from "../menuItem";
+import Title from "../components/title";
+import MenuItem from "./menuItem";
 
-const MenuWrapper = () => {
+const Menu = () => {
   return (
     <div className="container mx-auto flex flex-col items-center mb-16">
       <Title addClass="text-[40px] text-white">Our Menu</Title>
@@ -21,4 +21,4 @@ const MenuWrapper = () => {
   );
 };
 
-export default MenuWrapper;
+export default Menu;
